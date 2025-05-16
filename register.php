@@ -1,51 +1,130 @@
 <?php
 session_start();
-include 'db.php';
-
-$message = '';
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-
-    $stmt = $conn->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
-    $stmt->bind_param("ss", $username, $email);
-    $stmt->execute();
-    $stmt->store_result();
-
-    if ($stmt->num_rows > 0) {
-        $message = "Username or Email already exists.";
-    } else {
-        $stmt->close();
-        $stmt = $conn->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $username, $email, $password);
-        if ($stmt->execute()) {
-            $message = "Registration successful! <a href='login.php'>Login here</a>.";
-        } else {
-            $message = "Registration failed. Please try again.";
-        }
-    }
-    $stmt->close();
+if (isset($_SESSION['user_id'])) {
+    header("Location: welcome.php");
+    exit;
 }
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Register - Flight Booking</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: url('background.avif') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 0;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      max-width: 400px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.7);
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      font-weight: 700;
+      font-size: 2.5rem;
+      letter-spacing: 1.5px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    label {
+      margin: 10px 0 5px;
+      font-weight: 600;
+    }
+
+    input {
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      font-size: 1rem;
+      margin-bottom: 15px;
+    }
+
+    button {
+      padding: 12px;
+      background-color: #00b4d8;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #90e0ef;
+    }
+
+    p.links {
+      margin-top: 20px;
+      font-weight: 600;
+    }
+
+    p.links a {
+      color: #00b4d8;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    p.links a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-  <h1>Register</h1>
-  <?php if ($message) echo "<p>$message</p>"; ?>
-  <form method="POST" action="register.php">
-    <input type="text" name="username" placeholder="Username" required /><br><br>
-    <input type="email" name="email" placeholder="Email" required /><br><br>
-    <input type="password" name="password" placeholder="Password" required /><br><br>
-    <button type="submit">Register</button>
-  </form>
-  <p>Already have an account? <a href="login.php">Login here</a></p>
-  <p><a href="index.php">Back to Home</a></p>
+  <div class="overlay"></div>
+  <div class="content">
+    <h1>Register</h1>
+    <form method="POST" action="register_process.php">
+      <label for="username">Username</label>
+      <input type="text" name="username" id="username" required />
+
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" required />
+
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" required />
+
+      <button type="submit">Register</button>
+    </form>
+    <p class="links">
+      Already have an account? <a href="login.php">Login</a><br />
+      <a href="index.php">Back to Home</a>
+    </p>
+  </div>
 </body>
 </html>
