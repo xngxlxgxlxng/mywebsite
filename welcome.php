@@ -11,66 +11,79 @@ if (!isset($_SESSION['user_id'])) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Welcome - Flight Booking</title>
+  <title>Welcome</title>
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-
     body, html {
       height: 100%;
       margin: 0;
       font-family: 'Montserrat', sans-serif;
       background: url('background.avif') no-repeat center center fixed;
       background-size: cover;
-      color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
-      text-align: center;
-      padding: 20px;
     }
 
     .overlay {
-      position: absolute;
+      position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
       z-index: 0;
     }
 
     .container {
       position: relative;
       z-index: 1;
-      max-width: 400px;
-      background: rgba(0, 0, 0, 0.6);
+      max-width: 420px;
+      width: 90%;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
       padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.7);
-
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 520px;
+      color: white;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
     }
 
     h1 {
-      margin-bottom: 30px;
-      font-weight: 700;
-      font-size: 2.5rem;
-      letter-spacing: 1.5px;
-    }
-
-    form {
-      text-align: left;
+      font-size: 2rem;
       margin-bottom: 20px;
     }
 
-    label {
-      font-weight: 600;
-      display: block;
-      margin: 15px 0 5px;
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
     }
 
-    select, input[type="datetime-local"] {
-      width: 100%;
-      padding: 10px;
-      border-radius
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(135deg, #00b4d8, #0077b6);
+      border: none;
+      border-radius: 30px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background: linear-gradient(135deg, #90e0ef, #00b4d8);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="container">
+    <h1>Welcome to Flight Booking</h1>
+    <p>You are successfully logged in.</p>
+    <a href="logout.php" class="btn">Logout</a>
+  </div>
+</body>
+</html>
