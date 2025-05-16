@@ -1,13 +1,58 @@
+/* Minimalist style */
 body {
-  background-color: #e6f7ff;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 480px;
+  margin: 40px auto;
   padding: 20px;
+  background: #f9f9f9;
+  color: #222;
 }
 
-h1 {
-  color: #0077cc;
+h1, h2 {
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 15px;
 }
 
-p {
-  font-size: 18px;
+input, button {
+  width: 100%;
+  padding: 10px 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  background: white;
+  transition: border-color 0.3s;
+}
+
+input:focus, button:hover {
+  border-color: #007BFF;
+  outline: none;
+  cursor: pointer;
+}
+
+button {
+  background: #007BFF;
+  color: white;
+  border: none;
+  font-weight: 600;
+}
+
+button:active {
+  background: #0056b3;
+}
+
+a {
+  color: #007BFF;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+p, form {
+  margin-top: 15px;
 }
