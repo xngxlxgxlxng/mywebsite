@@ -1,8 +1,32 @@
 <?php
 session_start();
-if (isset($_SESSION['user_id'])) {
-    header("Location: welcome.php");
-    exit;
+include 'db.php';
+
+$message = '';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = $_POST['password']; // Plain text password (no hashing)
+
+    $stmt = $conn->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
+    $stmt->bind_param("ss", $username, $email);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows > 0) {
+        $message = "Username or Email already exists.";
+    } else {
+        $stmt->close();
+        $stmt = $conn->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $username, $email, $password);
+        if ($stmt->execute()) {
+            $message = "Registration successful! <a href='login.php'>Login here</a>.";
+        } else {
+            $message = "Registration failed. Please try again.";
+        }
+    }
+    $stmt->close();
 }
 ?>
 
@@ -12,119 +36,141 @@ if (isset($_SESSION['user_id'])) {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Register - Flight Booking</title>
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-
-    body, html {
-      height: 100%;
+    * {
+      box-sizing: border-box;
+    }
+    body {
       margin: 0;
-      font-family: 'Montserrat', sans-serif;
-      background: url('background.avif') no-repeat center center fixed;
-      background-size: cover;
-      color: #fff;
+      padding: 0;
+      font-family: 'Poppins', Arial, sans-serif;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      text-align: center;
-      padding: 20px;
-    }
-
-    .overlay {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 0;
-    }
-
-    .content {
+      color: #333;
       position: relative;
-      z-index: 1;
-      max-width: 400px;
-      background: rgba(0, 0, 0, 0.6);
-      padding: 40px;
+      overflow: hidden;
+      background: none;
+    }
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('images/background.png') no-repeat center center fixed;
+      background-size: cover;
+      filter: blur(6px);
+      z-index: -1;
+    }
+    .register-container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 45px 35px;
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.7);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      width: 360px;
+      text-align: center;
+      transition: box-shadow 0.3s ease;
     }
-
+    .register-container:hover {
+      box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+    }
     h1 {
-      margin-bottom: 30px;
-      font-weight: 700;
-      font-size: 2.5rem;
-      letter-spacing: 1.5px;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      text-align: left;
-    }
-
-    label {
-      margin: 10px 0 5px;
+      margin-bottom: 28px;
       font-weight: 600;
+      font-size: 28px;
+      color: rgb(0, 0, 0);
+      letter-spacing: 1.1px;
     }
-
-    input {
-      padding: 10px;
-      border-radius: 5px;
-      border: none;
-      font-size: 1rem;
-      margin-bottom: 15px;
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 14px 15px;
+      margin: 14px 0 22px;
+      border: 1.8px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.25s ease;
     }
-
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      border-color: #0d8ddb;
+      outline: none;
+      box-shadow: 0 0 6px rgba(13, 141, 219, 0.5);
+    }
     button {
-      padding: 12px;
-      background-color: #00b4d8;
+      width: 100%;
+      padding: 14px 0;
+      background-color: #0d8ddb;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       color: white;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 1.1rem;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #90e0ef;
-    }
-
-    p.links {
-      margin-top: 20px;
+      font-size: 18px;
       font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.9px;
+      box-shadow: 0 4px 14px rgba(13, 141, 219, 0.4);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
-
-    p.links a {
-      color: #00b4d8;
+    button:hover {
+      background-color: #0b76bc;
+      box-shadow: 0 6px 20px rgba(11, 118, 188, 0.6);
+    }
+    button:focus {
+      outline: none;
+      box-shadow: 0 0 10px rgba(13, 141, 219, 0.8);
+    }
+    p.message {
+      margin: 16px 0 0;
+      color: #2e7d32;
+      font-weight: 600;
+      font-size: 15px;
+    }
+    p.error {
+      margin: 16px 0 0;
+      color: #d32f2f;
+      font-weight: 600;
+      font-size: 15px;
+    }
+    a {
+      color: #0d8ddb;
       text-decoration: none;
-      margin: 0 10px;
+      font-weight: 600;
+      transition: color 0.3s ease;
     }
-
-    p.links a:hover {
+    a:hover {
       text-decoration: underline;
+      color: #0b76bc;
+    }
+    p {
+      margin: 14px 0 0;
+      font-size: 14px;
+      color: #555;
     }
   </style>
 </head>
 <body>
-  <div class="overlay"></div>
-  <div class="content">
+  <div class="register-container">
     <h1>Register</h1>
-    <form method="POST" action="register_process.php">
-      <label for="username">Username</label>
-      <input type="text" name="username" id="username" required />
-
-      <label for="email">Email</label>
-      <input type="email" name="email" id="email" required />
-
-      <label for="password">Password</label>
-      <input type="password" name="password" id="password" required />
-
+    <?php 
+      if ($message) {
+          $class = strpos($message, 'successful') !== false ? 'message' : 'error';
+          echo "<p class='$class'>$message</p>"; 
+      }
+    ?>
+    <form method="POST" action="register.php" novalidate>
+      <input type="text" name="username" placeholder="Username" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="password" name="password" placeholder="Password" required />
       <button type="submit">Register</button>
     </form>
-    <p class="links">
-      Already have an account? <a href="login.php">Login</a><br />
-      <a href="index.php">Back to Home</a>
-    </p>
+    <p>Already have an account? <a href="login.php">Login here</a></p>
+    <p><a href="index.php">Back to Home</a></p>
   </div>
 </body>
 </html>

@@ -1,88 +1,41 @@
 body {
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  padding: 0;
-  background: url('background.avif') no-repeat center center fixed;
-  background-size: cover;
-  color: #1a1a1a;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
-
-.container {
-  background: rgba(255, 255, 255, 0.92);
-  border-radius: 16px;
-  padding: 40px;
-  max-width: 420px;
-  width: 90%;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(6px);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  font-family: Arial, sans-serif;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 0 15px;
 }
 
 h1, h2 {
-  font-weight: 700;
-  color: #111;
-  text-align: center;
-  margin: 0 0 10px;
+  color: #333;
 }
 
-input, select, button {
+input, button {
+  padding: 8px;
+  margin: 5px 0;
   width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
   box-sizing: border-box;
-  transition: all 0.3s ease;
-}
-
-input:focus, select:focus {
-  border-color: #007BFF;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
-  outline: none;
 }
 
 button {
-  background-color: #007BFF;
+  background-color: #007bff;
   color: white;
-  font-weight: 600;
   border: none;
   cursor: pointer;
-  transition: background 0.3s ease;
 }
 
 button:hover {
   background-color: #0056b3;
 }
 
+p {
+  margin: 10px 0;
+}
+
 a {
-  color: #007BFF;
+  color: #007bff;
   text-decoration: none;
-  font-weight: 500;
-  text-align: center;
-  display: inline-block;
-  margin-top: 10px;
 }
 
 a:hover {
   text-decoration: underline;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-footer {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 0.9rem;
-  color: #666;
 }

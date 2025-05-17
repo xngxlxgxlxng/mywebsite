@@ -12,86 +12,87 @@ if (isset($_SESSION['user_id'])) {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Home - Flight Booking</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
+    /* Full page background */
     body, html {
-      height: 100%;
       margin: 0;
-      font-family: 'Montserrat', sans-serif;
-      background: url('background.avif') no-repeat center center fixed;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('images/background.png') no-repeat center center fixed;
       background-size: cover;
       display: flex;
       justify-content: center;
       align-items: center;
-      position: relative;
     }
 
-    .overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(5px);
-      z-index: 0;
-    }
-
-    .content {
-      position: relative;
-      z-index: 1;
+    /* Container for content */
+    .container {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 40px 50px;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      text-align: center;
       max-width: 400px;
       width: 90%;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 40px;
-      border-radius: 20px;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-      color: #fff;
-      text-align: center;
-      transition: transform 0.3s ease;
-    }
-
-    .content:hover {
-      transform: scale(1.02);
     }
 
     h1 {
+      color:rgb(0, 0, 0);
+      margin-bottom: 25px;
       font-size: 2.5rem;
-      margin-bottom: 30px;
       font-weight: 700;
-      letter-spacing: 1.2px;
     }
 
-    .btn-link {
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 35px;
+      color: #333;
+    }
+
+    a.button {
       display: inline-block;
-      padding: 12px 24px;
-      margin: 10px;
-      font-size: 1rem;
-      font-weight: 600;
+      background-color: #0d8ddb;
+      color: white;
+      padding: 14px 30px;
+      margin: 0 10px;
+      border-radius: 8px;
       text-decoration: none;
-      color: #fff;
-      background: linear-gradient(135deg, #00b4d8, #0077b6);
-      border-radius: 30px;
-      transition: all 0.3s ease;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 10px rgba(13, 141, 219, 0.4);
     }
 
-    .btn-link:hover {
-      background: linear-gradient(135deg, #90e0ef, #00b4d8);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    a.button:hover {
+      background-color: #0b76bc;
+      box-shadow: 0 6px 15px rgba(11, 118, 188, 0.5);
+    }
+
+    /* Responsive */
+    @media (max-width: 450px) {
+      .container {
+        padding: 30px 20px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      a.button {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+        margin: 8px 5px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="overlay"></div>
-  <div class="content">
+  <div class="container">
     <h1>Flight Booking</h1>
-    <a href="register.php" class="btn-link">Register</a>
-    <a href="login.php" class="btn-link">Login</a>
+    <p>Book your flights quickly and easily.</p>
+    <a href="register.php" class="button">Register</a>
+    <a href="login.php" class="button">Login</a>
   </div>
 </body>
 </html>
